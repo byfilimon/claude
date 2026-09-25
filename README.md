@@ -33,8 +33,21 @@ npm test         # тесты геометрии, парсера GLM и DXF
 npm run build    # сборка в dist/
 ```
 
-Сборка автоматически публикуется на GitHub Pages (`.github/workflows/deploy.yml`) —
-в настройках репозитория нужно включить Pages → Source: GitHub Actions.
+## Деплой на VPS (zamer.2pietro.com.pl)
+
+Локально (нужен SSH-доступ к серверу):
+
+```bash
+npm ci && npm run build
+VPS_HOST=46.36.220.54 bash deploy/deploy.sh
+```
+
+`deploy/server-setup.sh` на сервере: находит сайт домена в nginx/apache (в т.ч. созданный панелью) и
+берёт его каталог, либо создаёт vhost nginx с корнем `/var/www/zamer`; выкладывает файлы; выпускает
+сертификат Let's Encrypt, если его нет (HTTPS обязателен для Web Bluetooth).
+
+Автоматически: `.github/workflows/deploy.yml` делает то же при каждом пуше, если в секретах репозитория
+заданы `VPS_HOST` и `VPS_SSH_KEY` (или `VPS_PASSWORD`).
 
 ## Дальше
 
